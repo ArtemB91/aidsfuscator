@@ -19,7 +19,7 @@ public class Main {
             """;
 
     public static void main(String[] args) {
-        UpdateChecker.checkAndPrintUpdates();
+
         if(args.length == 0) {
             Logger.error(BAD_ARGS);
             return;
