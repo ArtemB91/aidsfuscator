@@ -32,7 +32,7 @@ public class ClassRenameTransformer extends Transformer {
             if(Exclusions.RENAME_CLASS.excluded(clazz))
                 continue;
 
-            var classPrefix = prefix.value();
+            var classPrefix = clazz.name().substring(0, clazz.name().lastIndexOf('/') + 1) + prefix.value();
             if(clazz.isMixin())
                 classPrefix = mixinPrefix.value();
 
