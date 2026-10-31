@@ -1,4 +1,7 @@
 # Aidsfuscator v2.x
+
+This branch contains changes for Java 25 and Spring applications. See [the fork notes](FORK.md) for the upstream version, changes, and build command.
+
 Aidsfuscator is a java bytecode obfuscator that aims to become one of, if not the best free obfuscators. 
 <br>
   Join the [discord server](https://discord.gg/4JGANqEZsK)!
