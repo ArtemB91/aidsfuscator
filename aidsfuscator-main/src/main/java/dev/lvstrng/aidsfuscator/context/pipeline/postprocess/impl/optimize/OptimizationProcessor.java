@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OptimizationProcessor implements IProcessor {
     private static final List<IOptimizationPass> optimizationPasses = List.of(
-            
+
     );
 
     @Override
