@@ -19,7 +19,7 @@ public class LocalVariableNameTransformer extends Transformer {
                 if(Exclusions.LOCAL_NAMES.excluded(e))
                     return;
 
-                e.core().parameters = null;
+
                 e.localVariables().clear();
                 markChange();
             });
