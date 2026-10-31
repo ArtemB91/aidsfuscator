@@ -1,6 +1,7 @@
 # Java 25 and Spring fork
 
-This branch preserves four changes tested against a Java 25 Spring Boot application.
+This branch preserves four changes tested against a Java 25 Spring Boot application
+and a parameter metadata fix found during the fork review.
 The upstream base is [v2.10.0](https://github.com/LvStrnggg/aidsfuscator/tree/v2.10.0),
 commit `7bea4cc05b98b492c55986070428e1a6bdf1f750`.
 New upstream commits are not included automatically.
@@ -18,6 +19,9 @@ New upstream commits are not included automatically.
    package access. Mixin naming keeps its upstream behavior.
 4. `LocalVariableNameTransformer` clears local variable tables but retains
    `MethodParameters`. Spring can still read parameter names through reflection.
+5. `JMethod.allocParameter` adds a synthetic entry to existing `MethodParameters`
+   when it appends an argument. `localNames` and `methodSalting` can run together
+   without causing `MalformedParametersException` during reflection.
 
 These changes do not provide Spring keep rules. Application configurations must
 preserve the names and metadata used by reflection and external contracts.
@@ -36,6 +40,18 @@ The build compiles the upstream test fixtures but does not run behavioral tests.
 For a build with a prepared Maven cache, add `--offline`.
 
 See the [upstream usage instructions](README.md#how-to-use) for the CLI layout.
+
+## Check parameter metadata
+
+After the build, run the regression check with JDK 25:
+
+```sh
+java -Xverify:all --class-path aidsfuscator-main/target/aidsfuscator-obfuscator-1.0-SNAPSHOT.jar tests/MethodParameterMetadataCheck.java
+```
+
+The check applies `localNames` and `methodSalting`, loads the resulting classes,
+and calls the transformed methods. It checks named and unnamed inputs with both
+single-slot and two-slot arguments. Success prints `PARAMETER_METADATA_OK`.
 
 ## Verification limits
 

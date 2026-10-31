@@ -16,6 +16,7 @@ import dev.lvstrng.aidsfuscator.tree.IAccessFlags;
 import dev.lvstrng.aidsfuscator.tree.IAnnotatable;
 import dev.lvstrng.aidsfuscator.tree.IHierarchical;
 import dev.lvstrng.aidsfuscator.utils.InsnBuilder;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
 import org.objectweb.asm.tree.analysis.AnalyzerException;
@@ -114,6 +115,7 @@ public class JMethod implements IAccessFlags, ISaltable<MethodSalt>, IHierarchic
         return insns().indexOf(insn);
     }
 
+    /** Adds an argument and keeps existing parameter metadata aligned with the descriptor. */
     public int allocParameter(Type type) {
         int argSize = Arrays.stream(args()).mapToInt(Type::getSize).sum();
         int spot = isStatic() ? argSize : argSize + 1;
@@ -139,6 +141,9 @@ public class JMethod implements IAccessFlags, ISaltable<MethodSalt>, IHierarchic
             core.signature = signature().replace(")", type.getDescriptor() + ")");
         }
         core.desc = desc().replace(")", type.getDescriptor() + ")");
+        if (core.parameters != null) {
+            core.parameters.add(new ParameterNode(null, Opcodes.ACC_SYNTHETIC));
+        }
         core.maxLocals += type.getSize();
         return spot;
     }
